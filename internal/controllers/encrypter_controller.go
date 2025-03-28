@@ -17,11 +17,12 @@ func generateKeys() (rsa.PrivateKey, error) {
 }
 
 func Encoder() {
-	privateKey, err := generateKeys()
+	KeysPair, err := generateKeys()
 	if err != nil {
 		return
 	}
-	publicKey := privateKey.PublicKey
-	fmt.Println(publicKey)
-
+	publicKey := KeysPair.PublicKey
+	privateKey := KeysPair.D
+	fmt.Println("Public Key: ", publicKey)
+	fmt.Println("Private key: ", privateKey)
 }
