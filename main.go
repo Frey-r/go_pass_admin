@@ -1,6 +1,7 @@
 package main
 
-var OBJECT string = "Hello World"
+import "passcript/internal/controllers"
 
 func main() {
+	controllers.CreateUser("eduardo", "123456")
 }

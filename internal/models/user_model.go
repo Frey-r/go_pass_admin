@@ -17,8 +17,10 @@ type user struct {
 
 func NewUser(name string, password string) *user {
 	return &user{
-		name:     name,
-		password: password,
+		name:      name,
+		password:  password,
+		createdAt: time.Now(),
+		updatedAt: time.Now(),
 	}
 }
 func (u *user) GetName() string {
