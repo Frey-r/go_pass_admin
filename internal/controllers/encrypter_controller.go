@@ -3,11 +3,13 @@ package controllers
 import (
 	"crypto/rand"
 	"crypto/rsa"
-	"fmt"
+	"crypto/sha256"
 	"passcript/internal/utils"
+
+	"go.uber.org/zap"
 )
 
-func generateKeys() (rsa.PrivateKey, error) {
+func GenerateKeys() (rsa.PrivateKey, error) {
 	utils.Log().Info("Generating keys")
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
@@ -16,13 +18,22 @@ func generateKeys() (rsa.PrivateKey, error) {
 	return *privateKey, nil
 }
 
-func Encoder() {
-	KeysPair, err := generateKeys()
+func Encrypter(publicKey *rsa.PublicKey, object string) []byte {
+	utils.Log().Info("Encrypting object")
+	encrypted, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, publicKey, []byte(object), nil)
 	if err != nil {
-		return
+		utils.Log().Error("Error encrypting object", zap.Error(err))
+		return nil
 	}
-	publicKey := KeysPair.PublicKey
-	privateKey := KeysPair.D
-	fmt.Println("Public Key: ", publicKey)
-	fmt.Println("Private key: ", privateKey)
+	return encrypted
+}
+
+func Decrypter(privateKey *rsa.PrivateKey, object []byte) string {
+	utils.Log().Info("Decrypting object")
+	decrypted, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, privateKey, object, nil)
+	if err != nil {
+		utils.Log().Error("Error decrypting object", zap.Error(err))
+		return ""
+	}
+	return string(decrypted)
 }
