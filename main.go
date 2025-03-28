@@ -1,9 +1,6 @@
 package main
 
-import (
-	"passcript/internal/controllers"
-)
+var OBJECT string = "Hello World"
 
 func main() {
-	controllers.Encoder()
 }

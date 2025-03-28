@@ -37,3 +37,14 @@ func Decrypter(privateKey *rsa.PrivateKey, object []byte) string {
 	}
 	return string(decrypted)
 }
+
+/*
+USE
+	privateKey, err := controllers.GenerateKeys()
+	if err != nil {
+		panic(err)
+	}
+	publicKey := privateKey.Public().(*rsa.PublicKey)
+	encrypted := controllers.Encrypter(publicKey, OBJECT)
+	decrypted := controllers.Decrypter(&privateKey, encrypted)
+*/
