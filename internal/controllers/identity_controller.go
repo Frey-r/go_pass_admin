@@ -38,21 +38,21 @@ func CreateUser(name string, password string) error {
 	return nil
 }
 
-func LoginUser(name string, password string) (error, int) {
+func LoginUser(name string, password string) (int, error) {
 	utils.Log().Info("Logging in user " + name)
 	user := models.User{}
 	db := GetDb()
 	err := db.Where("name = ?", name).First(&user).Error
 	if err != nil {
 		utils.Log().Error("Error logging in user", zap.Error(err))
-		return err, 0
+		return 0, err
 	}
 	encryptedPassword := user.GetPassword()
 	decryptedPassword := Decrypter(GetPrivateKey(), encryptedPassword)
 	if password != string(decryptedPassword) {
 		utils.Log().Error("Error logging in user", zap.Error(err))
-		return err, 0
+		return 0, err
 	}
 	utils.Log().Info("User logged in successfully")
-	return nil, user.GetID()
+	return user.GetID(), nil
 }
