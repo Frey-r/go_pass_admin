@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	gorm.Model
-	id        string `gorm:"type:int;not null;primary_key;auto_increment"`
+	id        int    `gorm:"type:int;not null;primary_key;auto_increment"`
 	Name      string `gorm:"type:varchar(100);not null"`
 	Password  []byte `gorm:"type:blob;not null"`
 	createdAt time.Time
@@ -56,6 +56,6 @@ func (u *User) SetUpdatedAt(updatedAt time.Time) {
 	u.updatedAt = updatedAt
 }
 
-func (u *User) GetID() string {
+func (u *User) GetID() int {
 	return u.id
 }
