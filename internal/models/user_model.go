@@ -10,12 +10,12 @@ type User struct {
 	gorm.Model
 	id        string `gorm:"type:int;not null;primary_key;auto_increment"`
 	Name      string `gorm:"type:varchar(100);not null"`
-	Password  string `gorm:"type:varchar(150);not null"`
+	Password  []byte `gorm:"type:blob;not null"`
 	createdAt time.Time
 	updatedAt time.Time
 }
 
-func NewUser(name string, password string) *User {
+func NewUser(name string, password []byte) *User {
 	return &User{
 		Name:      name,
 		Password:  password,
@@ -32,11 +32,11 @@ func (u *User) SetName(name string) {
 	u.Name = name
 }
 
-func (u *User) GetPassword() string {
+func (u *User) GetPassword() []byte {
 	return u.Password
 }
 
-func (u *User) SetPassword(password string) {
+func (u *User) SetPassword(password []byte) {
 	u.Password = password
 }
 
