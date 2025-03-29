@@ -11,7 +11,7 @@ import (
 
 var database_path string = "./internal/db/"
 
-func Get_db() *gorm.DB {
+func GetDb() *gorm.DB {
 	var db, err = gorm.Open(sqlite.Open(database_path+"passadmin.db"), &gorm.Config{})
 	if err != nil {
 		utils.Log().Error("Error opening database", zap.Error(err))
@@ -20,8 +20,8 @@ func Get_db() *gorm.DB {
 	return db
 }
 
-func Migrate_tables() {
-	db := Get_db()
+func MigrateTables() {
+	db := GetDb()
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Pass{})
 	db.Commit()

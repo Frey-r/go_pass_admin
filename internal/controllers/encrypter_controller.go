@@ -4,18 +4,59 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
+	"passcript/internal/security"
 	"passcript/internal/utils"
 
 	"go.uber.org/zap"
 )
 
-func GenerateKeys() (rsa.PrivateKey, error) {
+var (
+	privateKey *rsa.PrivateKey
+	publicKey  *rsa.PublicKey
+)
+
+func InitializeRSAKeys() error {
+	keyStore, err := security.NewKeyStore()
+	if err != nil {
+		return err
+	}
+
+	if keyStore.KeysExist() {
+		privateKey, err = keyStore.LoadPrivateKey()
+		if err != nil {
+			return err
+		}
+		publicKey = &privateKey.PublicKey
+	} else {
+		privateKey, err = GenerateKeys()
+		if err != nil {
+			return err
+		}
+		if err := keyStore.SaveKeys(privateKey); err != nil {
+			return err
+		}
+
+		publicKey = &privateKey.PublicKey
+	}
+
+	return nil
+}
+
+func GetPrivateKey() *rsa.PrivateKey {
+	return privateKey
+}
+
+func GetPublicKey() *rsa.PublicKey {
+	return publicKey
+}
+
+func GenerateKeys() (*rsa.PrivateKey, error) {
 	utils.Log().Info("Generating keys")
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
-		return rsa.PrivateKey{}, err
+		return nil, err
 	}
-	return *privateKey, nil
+	return privateKey, nil
 }
 
 func Encrypter(publicKey *rsa.PublicKey, object string) []byte {
@@ -40,11 +81,8 @@ func Decrypter(privateKey *rsa.PrivateKey, object []byte) string {
 
 /*
 USE
-	privateKey, err := controllers.GenerateKeys()
-	if err != nil {
-		panic(err)
-	}
-	publicKey := privateKey.Public().(*rsa.PublicKey)
-	encrypted := controllers.Encrypter(publicKey, OBJECT)
-	decrypted := controllers.Decrypter(&privateKey, encrypted)
+    privateKey, err := controllers.GetPrivateKey()
+    publicKey := controllers.GetPublicKey()
+    encrypted := controllers.Encrypter(publicKey, OBJECT)
+    decrypted := controllers.Decrypter(privateKey, encrypted)
 */
