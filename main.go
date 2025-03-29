@@ -25,5 +25,5 @@ func init() {
 }
 
 func main() {
-	controllers.CreateUser("eduardo", "123456")
+	controllers.LoginUser("eduardo", "123456")
 }

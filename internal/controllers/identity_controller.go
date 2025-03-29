@@ -47,8 +47,7 @@ func LoginUser(name string, password string) (int, error) {
 		utils.Log().Error("Error logging in user", zap.Error(err))
 		return 0, err
 	}
-	encryptedPassword := user.GetPassword()
-	decryptedPassword := Decrypter(GetPrivateKey(), encryptedPassword)
+	decryptedPassword := Decrypter(GetPrivateKey(), user.GetPassword())
 	if password != string(decryptedPassword) {
 		utils.Log().Error("Error logging in user", zap.Error(err))
 		return 0, err
