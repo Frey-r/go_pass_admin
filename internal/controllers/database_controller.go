@@ -24,5 +24,6 @@ func MigrateTables() {
 	db := GetDb()
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Pass{})
+	db.AutoMigrate(&models.JWT{})
 	db.Commit()
 }
