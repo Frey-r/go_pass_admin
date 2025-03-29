@@ -6,55 +6,56 @@ import (
 	"gorm.io/gorm"
 )
 
-type user struct {
+type User struct {
 	gorm.Model
 	id        string `gorm:"type:int;not null;primary_key;auto_increment"`
-	name      string `gorm:"type:varchar(100);not null"`
-	password  string `gorm:"type:varchar(150);not null"`
+	Name      string `gorm:"type:varchar(100);not null"`
+	Password  string `gorm:"type:varchar(150);not null"`
 	createdAt time.Time
 	updatedAt time.Time
 }
 
-func NewUser(name string, password string) *user {
-	return &user{
-		name:      name,
-		password:  password,
+func NewUser(name string, password string) *User {
+	return &User{
+		Name:      name,
+		Password:  password,
 		createdAt: time.Now(),
 		updatedAt: time.Now(),
+		Model:     gorm.Model{},
 	}
 }
-func (u *user) GetName() string {
-	return u.name
+func (u *User) GetName() string {
+	return u.Name
 }
 
-func (u *user) SetName(name string) {
-	u.name = name
+func (u *User) SetName(name string) {
+	u.Name = name
 }
 
-func (u *user) GetPassword() string {
-	return u.password
+func (u *User) GetPassword() string {
+	return u.Password
 }
 
-func (u *user) SetPassword(password string) {
-	u.password = password
+func (u *User) SetPassword(password string) {
+	u.Password = password
 }
 
-func (u *user) GetCreatedAt() time.Time {
+func (u *User) GetCreatedAt() time.Time {
 	return u.createdAt
 }
 
-func (u *user) SetCreatedAt(createdAt time.Time) {
+func (u *User) SetCreatedAt(createdAt time.Time) {
 	u.createdAt = createdAt
 }
 
-func (u *user) GetUpdatedAt() time.Time {
+func (u *User) GetUpdatedAt() time.Time {
 	return u.updatedAt
 }
 
-func (u *user) SetUpdatedAt(updatedAt time.Time) {
+func (u *User) SetUpdatedAt(updatedAt time.Time) {
 	u.updatedAt = updatedAt
 }
 
-func (u *user) GetID() string {
+func (u *User) GetID() string {
 	return u.id
 }

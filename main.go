@@ -1,7 +1,17 @@
 package main
 
-import "passcript/internal/controllers"
+import (
+	"os"
+	"passcript/internal/utils"
+
+	"go.uber.org/zap"
+)
+
+func init() {
+
+}
 
 func main() {
-	controllers.CreateUser("eduardo", "123456")
+	utils.Log().Info("Starting application")
+	utils.Log().Info("PUBLIC_KEY set", zap.String("public_key", os.Getenv("PUBLIC_KEY")))
 }

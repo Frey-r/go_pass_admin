@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"passcript/internal/models"
 	"passcript/internal/utils"
 
 	"go.uber.org/zap"
@@ -17,4 +18,11 @@ func Get_db() *gorm.DB {
 		return nil
 	}
 	return db
+}
+
+func Migrate_tables() {
+	db := Get_db()
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Pass{})
+	db.Commit()
 }
